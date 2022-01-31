@@ -55,7 +55,7 @@ export default {
         id: this.$route.params.productid,
       };
       const res = await this.$axios.post(
-        "http://localhost/php-api-with-jwt-auth/crud-file/get-single-products.php",
+        "https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/crud-file/get-single-products.php",
         data
       );
       if (res.data.status == 1) {

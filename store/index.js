@@ -31,7 +31,7 @@ export const mutations = {
 
 export const actions = {
     async createUser(_, data) {
-        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/auth-file/create-user.php', data);
+        const res = await this.$axios.post('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/auth-file/create-user.php', data);
 
         if (res.data.status == 1) {
             alert(res.data.message);
@@ -45,7 +45,7 @@ export const actions = {
     },
 
     async loginUser({ commit }, data) {
-        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/auth-file/login-user.php', data);
+        const res = await this.$axios.post('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/auth-file/login-user.php', data);
         if (res.data.status == 1) {
             data.email = "";
             data.password = "";
@@ -72,7 +72,7 @@ export const actions = {
                 'Authorization': localStorage.getItem('token')
             }
         };
-        const res = await this.$axios.get('http://localhost/php-api-with-jwt-auth/auth-file/read-user.php', config);
+        const res = await this.$axios.get('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/auth-file/read-user.php', config);
         if (res.data.status == 1) {
             commit('setUser', res.data.message);
         } else {
@@ -86,7 +86,7 @@ export const actions = {
                 'Authorization': localStorage.getItem('token')
             }
         };
-        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/create-product.php', data, config);
+        const res = await this.$axios.post('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/crud-file/create-product.php', data, config);
         if (res.data.status == 1) {
             alert(res.data.message);
             this.$router.push('/product/');
@@ -96,7 +96,7 @@ export const actions = {
     },
 
     async deleteProduct({ commit, state }, data) {
-        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/delete-products.php', data);
+        const res = await this.$axios.post('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/crud-file/delete-products.php', data);
         const newProducts = state.products.filter(item => item.id !== data.id);
         if (res.data.status == 1) {
             alert(res.data.message);
@@ -107,14 +107,14 @@ export const actions = {
         }
     },
     async getAllProduct({ commit }) {
-        const res = await this.$axios.get('http://localhost/php-api-with-jwt-auth/crud-file/get-all-products.php');
+        const res = await this.$axios.get('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/crud-file/get-all-products.php');
         if (res.data.status == 1) {
             commit('setProducts', res.data.message);
         }
     },
 
     async updateProduct(_, data) {
-        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/update-products.php', data);
+        const res = await this.$axios.post('https://nuxt-app123.000webhostapp.com/php-api-with-jwt-auth/crud-file/update-products.php', data);
         if (res.data.status == 1) {
             alert(res.data.message);
             this.$router.push('/product/')
