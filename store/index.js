@@ -10,6 +10,9 @@ export const getters = {
     },
     token: (state) => {
         return state.token
+    },
+    products: (state) => {
+        return state.products;
     }
 }
 
@@ -19,6 +22,9 @@ export const mutations = {
     },
     setToken(state, token) {
         state.token = token
+    },
+    setProducts(state, products) {
+        state.products = products;
     }
 }
 
@@ -57,5 +63,63 @@ export const actions = {
         commit('setToken', '');
         localStorage.removeItem('token');
         this.$router.push("/login")
+    },
+
+
+    async readUser({ commit }) {
+        const config = {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        };
+        const res = await this.$axios.get('http://localhost/php-api-with-jwt-auth/auth-file/read-user.php', config);
+        if (res.data.status == 1) {
+            commit('setUser', res.data.message);
+        } else {
+            alert(res.data.message);
+        }
+    },
+
+    async createProduct(_, data) {
+        const config = {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        };
+        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/create-product.php', data, config);
+        if (res.data.status == 1) {
+            alert(res.data.message);
+            this.$router.push('/product/');
+        } else {
+            alert(res.data.message);
+        }
+    },
+
+    async deleteProduct({ commit, state }, data) {
+        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/delete-products.php', data);
+        const newProducts = state.products.filter(item => item.id !== data.id);
+        if (res.data.status == 1) {
+            alert(res.data.message);
+            commit('setProducts', newProducts);
+        } else {
+            alert(res.data.message);
+
+        }
+    },
+    async getAllProduct({ commit }) {
+        const res = await this.$axios.get('http://localhost/php-api-with-jwt-auth/crud-file/get-all-products.php');
+        if (res.data.status == 1) {
+            commit('setProducts', res.data.message);
+        }
+    },
+
+    async updateProduct(_, data) {
+        const res = await this.$axios.post('http://localhost/php-api-with-jwt-auth/crud-file/update-products.php', data);
+        if (res.data.status == 1) {
+            alert(res.data.message);
+            this.$router.push('/product/')
+        } else {
+            alert(res.data.message);
+        }
     }
 }

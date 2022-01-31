@@ -6,7 +6,12 @@
           <v-card>
             <v-card-title>
               <h1 class="my-4 text-center">Create Product</h1>
-              <form action="" id="w-100" @submit.prevent="create">
+              <form action="" id="w-100" @submit.prevent="updatePro">
+                <v-textField
+                  label="Enter Your id"
+                  v-model="id"
+                  type="hidden"
+                ></v-textField>
                 <v-textField
                   label="Enter Your Title"
                   v-model="title"
@@ -37,33 +42,49 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      id: "",
       title: "",
       content: "",
       price: "",
     };
   },
+
   methods: {
-    ...mapActions(["createProduct"]),
-    create() {
-      if (!this.title || !this.content || !this.price) {
-        alert("Please fill all the field");
+    async getProductById() {
+      const data = {
+        id: this.$route.params.productid,
+      };
+      const res = await this.$axios.post(
+        "http://localhost/php-api-with-jwt-auth/crud-file/get-single-products.php",
+        data
+      );
+      if (res.data.status == 1) {
+        this.id = res.data.message[0].id;
+        this.title = res.data.message[0].title;
+        this.content = res.data.message[0].content;
+        this.price = res.data.message[0].price;
+      }
+    },
+
+    ...mapActions(["updateProduct"]),
+    updatePro() {
+      if (!this.id || !this.title || !this.price || !this.content) {
+        alert("Please Fill the Field");
       } else {
         const data = {
+          id: this.id,
           title: this.title,
           content: this.content,
           price: this.price,
         };
-        this.createProduct(data);
+        this.updateProduct(data);
       }
     },
+  },
+  mounted() {
+    this.getProductById();
   },
 };
 </script>
 <style>
-#w-100 {
-  width: 100%;
-}
-.text-center {
-  text-align: center !important;
-}
 </style>

@@ -8,6 +8,7 @@
         <nuxt-link to="/product/create-product" class="mr-4 text--white"
           >Create</nuxt-link
         >
+        <span class="mr-4">{{ $store.state.user.name }}</span>
         <v-btn color="error" @click="logout">Logout</v-btn>
       </v-toolbar-title>
       <v-toolbar-title v-else>
@@ -56,9 +57,13 @@ export default {
 
   methods: {
     ...mapActions(["logoutUser"]),
+    ...mapActions(["readUser"]),
     logout() {
       this.logoutUser();
     },
+  },
+  mounted() {
+    this.readUser();
   },
 };
 </script>
